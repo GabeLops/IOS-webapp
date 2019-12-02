@@ -18,22 +18,29 @@ class ViewController: UIViewController, WKNavigationDelegate {
     override func loadView() {
         webView = WKWebView()
         webView.navigationDelegate = self
+        
         view = webView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Websites"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Open", style: .plain, target: self, action: #selector(openTapped))
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
-        
+        let back = UIBarButtonItem(title: "Back", style: .plain, target: webView, action: #selector(webView.goBack))
+        let forward = UIBarButtonItem(title: "forward", style: .plain, target: webView, action: #selector(webView.goForward))
         progressView = UIProgressView(progressViewStyle: .default)
         progressView.sizeToFit()
         let progressButton = UIBarButtonItem(customView: progressView)
         
-        toolbarItems = [progressButton, spacer, refresh]
+        toolbarItems = [progressButton,spacer, back, forward, refresh]
         navigationController?.isToolbarHidden = false
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
@@ -99,4 +106,15 @@ class ViewController: UIViewController, WKNavigationDelegate {
             present(blockedAC, animated: true)
         }
     }
+  /*  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+       return websites.count
+       }
+       
+      override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "website", for: indexPath)
+        cell.textLabel?.text = websites.sorted()[indexPath.row]
+        return cell
+       }
+    */
+   
 }
